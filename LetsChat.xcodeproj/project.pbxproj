@@ -9,21 +9,33 @@
 /* Begin PBXBuildFile section */
 		22A2BFF925CF330D009EAAB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2BFF825CF330D009EAAB2 /* AppDelegate.swift */; };
 		22A2BFFB25CF330D009EAAB2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2BFFA25CF330D009EAAB2 /* SceneDelegate.swift */; };
-		22A2BFFD25CF330D009EAAB2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2BFFC25CF330D009EAAB2 /* ViewController.swift */; };
+		22A2BFFD25CF330D009EAAB2 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2BFFC25CF330D009EAAB2 /* ConversationsViewController.swift */; };
 		22A2C00025CF330D009EAAB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A2BFFE25CF330D009EAAB2 /* Main.storyboard */; };
 		22A2C00225CF330F009EAAB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22A2C00125CF330F009EAAB2 /* Assets.xcassets */; };
 		22A2C00525CF330F009EAAB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A2C00325CF330F009EAAB2 /* LaunchScreen.storyboard */; };
+		22A2C01325CF6401009EAAB2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2C01225CF6401009EAAB2 /* LoginViewController.swift */; };
+		22A2C01525CF6410009EAAB2 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2C01425CF6410009EAAB2 /* RegisterViewController.swift */; };
+		22A2C01725CFB248009EAAB2 /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2C01625CFB248009EAAB2 /* PhotoViewerViewController.swift */; };
+		22A2C01925CFB267009EAAB2 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2C01825CFB267009EAAB2 /* VideoPlayerViewController.swift */; };
+		22A2C01B25CFB28F009EAAB2 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2C01A25CFB28F009EAAB2 /* NewConversationViewController.swift */; };
+		22A2C01D25CFB29D009EAAB2 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A2C01C25CFB29D009EAAB2 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		22A2BFF525CF330D009EAAB2 /* LetsChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A2BFF825CF330D009EAAB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22A2BFFA25CF330D009EAAB2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		22A2BFFC25CF330D009EAAB2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		22A2BFFC25CF330D009EAAB2 /* ConversationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
 		22A2BFFF25CF330D009EAAB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22A2C00125CF330F009EAAB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22A2C00425CF330F009EAAB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22A2C00625CF330F009EAAB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22A2C01225CF6401009EAAB2 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		22A2C01425CF6410009EAAB2 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		22A2C01625CFB248009EAAB2 /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
+		22A2C01825CFB267009EAAB2 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
+		22A2C01A25CFB28F009EAAB2 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
+		22A2C01C25CFB29D009EAAB2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +68,69 @@
 		22A2BFF725CF330D009EAAB2 /* LetsChat */ = {
 			isa = PBXGroup;
 			children = (
-				22A2BFF825CF330D009EAAB2 /* AppDelegate.swift */,
-				22A2BFFA25CF330D009EAAB2 /* SceneDelegate.swift */,
-				22A2BFFC25CF330D009EAAB2 /* ViewController.swift */,
-				22A2BFFE25CF330D009EAAB2 /* Main.storyboard */,
-				22A2C00125CF330F009EAAB2 /* Assets.xcassets */,
-				22A2C00325CF330F009EAAB2 /* LaunchScreen.storyboard */,
+				22A2C01025CF62AF009EAAB2 /* Resources */,
+				22A2C00F25CF62A6009EAAB2 /* ViewModels */,
+				22A2C00E25CF62A3009EAAB2 /* Models */,
+				22A2C00D25CF62A1009EAAB2 /* Views */,
+				22A2C00C25CF629D009EAAB2 /* Controllers */,
 				22A2C00625CF330F009EAAB2 /* Info.plist */,
 			);
 			path = LetsChat;
+			sourceTree = "<group>";
+		};
+		22A2C00C25CF629D009EAAB2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				22A2BFFC25CF330D009EAAB2 /* ConversationsViewController.swift */,
+				22A2C01225CF6401009EAAB2 /* LoginViewController.swift */,
+				22A2C01425CF6410009EAAB2 /* RegisterViewController.swift */,
+				22A2C01625CFB248009EAAB2 /* PhotoViewerViewController.swift */,
+				22A2C01825CFB267009EAAB2 /* VideoPlayerViewController.swift */,
+				22A2C01A25CFB28F009EAAB2 /* NewConversationViewController.swift */,
+				22A2C01C25CFB29D009EAAB2 /* ProfileViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		22A2C00D25CF62A1009EAAB2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				22A2C01125CF6319009EAAB2 /* Storyboards */,
+				22A2C00125CF330F009EAAB2 /* Assets.xcassets */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		22A2C00E25CF62A3009EAAB2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		22A2C00F25CF62A6009EAAB2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		22A2C01025CF62AF009EAAB2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				22A2BFF825CF330D009EAAB2 /* AppDelegate.swift */,
+				22A2BFFA25CF330D009EAAB2 /* SceneDelegate.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		22A2C01125CF6319009EAAB2 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				22A2BFFE25CF330D009EAAB2 /* Main.storyboard */,
+				22A2C00325CF330F009EAAB2 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,9 +203,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22A2BFFD25CF330D009EAAB2 /* ViewController.swift in Sources */,
+				22A2C01325CF6401009EAAB2 /* LoginViewController.swift in Sources */,
+				22A2C01525CF6410009EAAB2 /* RegisterViewController.swift in Sources */,
+				22A2C01B25CFB28F009EAAB2 /* NewConversationViewController.swift in Sources */,
+				22A2BFFD25CF330D009EAAB2 /* ConversationsViewController.swift in Sources */,
+				22A2C01925CFB267009EAAB2 /* VideoPlayerViewController.swift in Sources */,
 				22A2BFF925CF330D009EAAB2 /* AppDelegate.swift in Sources */,
+				22A2C01D25CFB29D009EAAB2 /* ProfileViewController.swift in Sources */,
 				22A2BFFB25CF330D009EAAB2 /* SceneDelegate.swift in Sources */,
+				22A2C01725CFB248009EAAB2 /* PhotoViewerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
