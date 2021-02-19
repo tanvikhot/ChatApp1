@@ -136,13 +136,20 @@ class LoginViewController: UIViewController {
         }
         
         //Firebase Log In
-        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: {authResult, error in
+        //Dismiss LoginViewController once the user authentication done and the user logs in
+        //So use [weak self] authResult, so we don't cauze a retention cycle, and unwrap that weak self to a strong self using guard let
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: {[weak self] authResult, error in
+            
+            guard let strongSelf = self else {
+                return
+            }
             guard let result = authResult, error == nil else {
                 print("Failed to log in user with email: \(email)")
                 return
             }
             let user = result.user
             print("Logged in user: \(user)")
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         })
     }
     func alertUserLoginError() {

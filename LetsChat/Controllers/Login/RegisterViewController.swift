@@ -19,7 +19,7 @@ class RegisterViewController: UIViewController {
     
     private let imageView : UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person")
+        imageView.image = UIImage(systemName: "person.circle")
         imageView.tintColor = .gray
         imageView.contentMode = .scaleAspectFit
         //In order to get a circular profile pic image, set masksToBounds property and also set it's frame size in viewDidLayoutSubviews
@@ -213,18 +213,44 @@ class RegisterViewController: UIViewController {
         
         
         //Firebase Log In
-        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { authResult, error in
-            guard let result = authResult, error == nil else {
-                print("Error creating user!")
-                return
-            }
-            let user = result.user
-            print("Created user: \(user)")
+        
+        //Call DatabaseManager.userExists to validate if the user account was already created with that email
+        DatabaseManager.shared.userExists(with: email,
+            completion: { [weak self] exists in
+                
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                guard !exists else {
+                    //user already exists
+                    strongSelf.alertUserLoginError(message: "Looks like a user account for that email already exists.")
+                    return
+                }
+                //User does not exists so create one..
+                //Make a [weak self] and bind this optional with a guard let. This weak self business just ensures that we capture a weakly retained reference of self which is this class if you don't include this and just reference self here functionally your code will still work but you'll have a memory leak
+                FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: { authResult, error in
+                    
+                    guard authResult != nil, error == nil else {
+                        print("Error creating user!")
+                        return
+                    }
+                    //let user = result.user
+                    //print("Created user: \(user)")
+                    //Create an insert entry into Firebase DB
+                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
+                                                                        lastName: lastName,
+                                                                        emailAddress: email))
+                    strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                    
+                })
             })
+        
+        
     }
-    func alertUserLoginError() {
+    func alertUserLoginError(message: String = "Please enter all information to create a new account.") {
         let alert = UIAlertController(title: "Woops!",
-                                      message: "Please enter all information to create a new account.",
+                                      message: message,
                                       preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Dismiss",
