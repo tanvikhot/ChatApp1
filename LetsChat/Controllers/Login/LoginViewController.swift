@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController {
 
@@ -66,6 +67,16 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    //set up some scopes on FB Login Button
+    private let facebookLoginButton: FBLoginButton = {
+        let button = FBLoginButton()
+        //public_profile will include the first name and last name we want and email from email is self-explanatory
+        print("In FBLogin Button scope creation")
+        button.permissions = ["email", "public_profile"]
+        return button
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Log In"
@@ -86,6 +97,12 @@ class LoginViewController: UIViewController {
          */
         emailField.delegate = self
         passwordField.delegate = self
+        /*
+         When we first set up the email pass log in, we are creating users in firebase when a
+         user signs in with Facebook rather continues with Facebook we still need to make sure that the email that is associated with that Facebook user doesn't already exist. If that email exists in our database before, we want to sign the user in with a firebase credential. If they don't exist, we want to sign them up with a firebase credential and there is a bit of handling we need to do around that. So the first thing we want to do is essentially get if the login was successful as well as set up the Scopes to request from Facebook so we're gonna set up a delegate for this FBbutton and to self and add an extension to the login view controller for a login button delegate
+
+         */
+        facebookLoginButton.delegate = self
         
         //We want the controller to conform to this delegate, so create an extention on this controller
         //Add subviews
@@ -95,6 +112,8 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
 
+        //FB SDK
+        scrollView.addSubview(facebookLoginButton)
     }
     
     override func viewDidLayoutSubviews() {
@@ -120,6 +139,13 @@ class LoginViewController: UIViewController {
                                    width: scrollView.width - 60,
                                    height: 52)
         
+        facebookLoginButton.frame = CGRect(x: 30,
+                                   y: loginButton.bottom+10,
+                                   width: scrollView.width - 60,
+                                   height: 52)
+        
+        facebookLoginButton.center = scrollView.center
+        facebookLoginButton.frame.origin.y = loginButton.bottom+20
     }
 
     //user-login credentials check
@@ -186,6 +212,88 @@ extension LoginViewController : UITextFieldDelegate {
         }
         return true
     }
+}
+
+extension LoginViewController: LoginButtonDelegate {
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        //no op
+    }
+    
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        
+       
+        //Unwrap the token from Facebook
+        guard let token = result?.token?.tokenString else {
+            print("User failed to log in with Facebook")
+            return
+        }
+        
+        //Before we actaully trade this token for a credential in Firebase, we should call a FB Graph request and get the name and email out of the current FB logged user
+        let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
+                                                         parameters: ["fields": "email, name"], tokenString: token,
+                                                         version: nil,
+                                                         httpMethod: .get)
+        //execute the FB get request with name and email
+        facebookRequest.start(completionHandler: {_, result, error in
+            //unwrap the name and email
+            guard let result = result as? [String: Any],
+                  error == nil else {
+                print("Failed to make Facebook graph request")
+                return
+            }
+            
+            //print("\(result)")
+        
+            //Once we have a token, we can create a credential and pass that on to Firebase
+            //we need to trade this access token to Firebase to get a credential
+            //Once we have the email out, we'll use our DatabaseManager to ensure the email is not already in the database. If it is, we don't have to do the insertion, we just have to log the user in. 'Continue' is not same as a registration for FB
+            guard let userName = result["name"] as? String,
+                  let email = result["email"] as? String else {
+                print("Failed to get name and email from FB result")
+                return
+            }
+            
+            let nameComponents = userName.components(separatedBy: " ")
+            guard nameComponents.count == 2 else {
+                return
+            }
+            let firstName = nameComponents[0]
+            let lastName = nameComponents[1]
+            
+            DatabaseManager.shared.userExists(with: email, completion: { exists in
+                if !exists {
+                    DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName,
+                                                                        lastName: lastName, emailAddress: email))
+                }
+                //we don't need an else here because that means the user email already exists so go ahead and log him in ..
+            })
+            
+            //Trade this access token from FB (withAccessToken: token) to Firebase credential..
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            //Now use this AuthCredential to sign the user in because we traded this credential for Firebase cedential
+            FirebaseAuth.Auth.auth().signIn(with: credential, completion: { [weak self] authResult, error in
+                
+                guard let strongSelf = self else {
+                    return
+                }
+                //Additional handling for multi-factor authentication. Facebook has MFA (text in the code that we sent to your phone, call / email etc. otherwise
+                guard authResult != nil, error == nil else {
+                    if let error = error {
+                        print("Facebook credential login failed. MFA may be needed - \(error)")
+                    }
+                    return
+                }
+                print("Successfully logged in using Facebook credentials")
+                strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                
+            })
+        })
+        
+        
+        
+    }
+    
+    
 }
 
 
