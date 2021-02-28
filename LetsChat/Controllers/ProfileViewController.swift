@@ -2,11 +2,14 @@
 //  ProfileViewController.swift
 //  LetsChat
 //
-//  Created by Gaurav Khot on 2/6/21.
+//  Created by Tanvi Khot on 2/6/21.
 //
 
 import UIKit
 import FirebaseAuth     //to log out the user
+import FBSDKLoginKit
+import GoogleSignIn
+
 class ProfileViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
@@ -49,30 +52,37 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         
         //<<TODO>> action sheet a special handling for iPad as it may crash, so let's come back to it as we build more
         let actionSheet = UIAlertController(title: "",
-                                      message: "",
-                                      preferredStyle: .actionSheet)
+                                            message: "",
+                                            preferredStyle: .actionSheet)
         //weak_self in the closure to ensure that we don't get stuck in a retention cycle
         actionSheet.addAction(UIAlertAction(title: "Log Out",
-                                            style: .destructive,
-                                            handler: { [weak self] _ in
+                        style: .destructive,
+                        handler: { [weak self] _ in
                                                 
-                                                guard let strongSelf = self else {
-                                                    return
-                                                }
-                                                do {
-                                                    try FirebaseAuth.Auth.auth().signOut()
-                                                    //user has successfully logged out so show the login screen (code from ConversationVC validateAuth() for more info
-                                                    
-                                                    let vc  = LoginViewController()
-                                                    //create a navigation controller that this vc gets plugged into
-                                                    let nav = UINavigationController(rootViewController: vc)
-                                                    nav.modalPresentationStyle = .fullScreen
-                                                    strongSelf.present (nav, animated: true)
-                                                }
-                                                catch {
-                                                    print("Failed to log out")
-                                                }
-                                            }))
+                        guard let strongSelf = self else {
+                            return
+                        }
+                            
+                        // Log out of Facebook so next time the user sees 'Continue to Facebook' as it logs out of FB session completely
+                        FBSDKLoginKit.LoginManager().logOut()
+                            
+                        // Google Log out
+                        GIDSignIn.sharedInstance()?.signOut()
+                            
+                        do {
+                            try FirebaseAuth.Auth.auth().signOut()
+                                //user has successfully logged out so show the login screen (code from ConversationVC validateAuth() for more info
+                                
+                                let vc = LoginViewController()
+                                //create a navigation controller that this vc gets plugged into
+                                let nav = UINavigationController(rootViewController: vc)
+                                nav.modalPresentationStyle = .fullScreen
+                                strongSelf.present (nav, animated: true)
+                            }
+                            catch {
+                                print("Failed to log out")
+                            }
+                        }))
         
         actionSheet.addAction(UIAlertAction(title: "Cancel",
                                             style: .cancel,

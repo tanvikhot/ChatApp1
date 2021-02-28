@@ -2,7 +2,7 @@
 //  Extensions.swift
 //  LetsChat
 //
-//  Created by Gaurav Khot on 2/6/21.
+//  Created by Tanvi Khot on 2/6/21.
 //
 
 import Foundation
@@ -28,4 +28,8 @@ extension UIView {
     public var right: CGFloat {
         return self.frame.size.width + self.frame.origin.x
     }
+}
+
+extension Notification.Name {
+    static let didLogInNotification = Notification.Name("didLogInNotification")
 }

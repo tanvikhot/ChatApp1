@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FBSDKLoginKit
+import GoogleSignIn
 
 class LoginViewController: UIViewController {
 
@@ -76,9 +77,26 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private let googleSigninButton = GIDSignInButton()
+    
+    private var loginObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // App delegate can fire up a notitifaction across the app and whoever is listening to it can take an action on it. HEre to get rid of the login screen after the user signs in with the Google credentials, let's leverage that Notification controller. Create a notification observer here.
+        //params: forName: Notification.Name("") will be replaced by didLogInNotification, queue will be themain Queue that is the main thread and 'using' will be a callback
+        loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: { [weak self] _ in
+            //Dismiss this View Controller
+            guard let StrongSelf = self else {
+                return
+            }
+        
+            StrongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            
+        })
+        
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         title = "Log In"
         view.backgroundColor = .white
         
@@ -114,6 +132,16 @@ class LoginViewController: UIViewController {
 
         //FB SDK
         scrollView.addSubview(facebookLoginButton)
+        
+        //Google Sign In
+        scrollView.addSubview(googleSigninButton)
+    }
+    
+    // Get rid of extra variables and free up some memory for ex. for loginObserver, once the screen dismisses, we can free up the mem used by it. deinit is a special function just to do that
+    deinit {
+        if let observer = loginObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -144,8 +172,13 @@ class LoginViewController: UIViewController {
                                    width: scrollView.width - 60,
                                    height: 52)
         
-        facebookLoginButton.center = scrollView.center
-        facebookLoginButton.frame.origin.y = loginButton.bottom+20
+        //facebookLoginButton.center = scrollView.center
+        //facebookLoginButton.frame.origin.y = loginButton.bottom+20
+        
+        googleSigninButton.frame = CGRect(x: 30,
+                                   y: facebookLoginButton.bottom+10,
+                                   width: scrollView.width - 60,
+                                   height: 52)
     }
 
     //user-login credentials check
@@ -175,6 +208,7 @@ class LoginViewController: UIViewController {
             }
             let user = result.user
             print("Logged in user: \(user)")
+            // Dismiss on the navigation controller.. get out of the login screen
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         })
     }
